@@ -3,11 +3,11 @@
 ## 简介
 __磁力搜不收录磁力链接，只是磁力的搬运工__  
 >
->网页版是[Mac版磁力搜](https://github.com/youusername/magnetX)的衍生项目  
+>本项目是[Mac版磁力搜](https://github.com/youusername/magnetX)的衍生项目  
 >根据制定的解析规则，一套代码解析多个磁力网站的HTML，将各个网站不同格式的搜索结果统一格式化
 
 ## 示例站点
-[https://bt.biedian.me](https://bt.biedian.me)
+[https://biedian.me](https://biedian.me)
 
 示例站点较不稳定，建议自行搭建，所用图标来自[iconfont](https://www.iconfont.cn)  
 
@@ -26,8 +26,8 @@ __磁力搜不收录磁力链接，只是磁力的搬运工__
 > 
 > 小程序：[magnetw-mini](https://github.com/dengyuhan/magnetw-mini)
 
-## 其它说明
-涉及本项目的文章或文档，请务必注明原项目出处
+## 免责说明
+本项目仅作为爬虫技术交流学习，__切勿非法使用__
 
 ## 相关项目
 [jsoup](https://github.com/jhy/jsoup)  

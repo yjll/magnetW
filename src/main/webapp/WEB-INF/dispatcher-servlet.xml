@@ -21,6 +21,8 @@ http://www.springframework.org/schema/cache http://www.springframework.org/schem
 
     <!-- 静态资源(js、image等)的访问 -->
     <mvc:resources mapping="/resources/**" location="/resources/"/>
+    <mvc:resources mapping="/favicon.ico" location="/resources/favicon.ico"/>
+    <mvc:resources mapping="/robots.txt" location="/resources/robots.txt"/>
 
     <!--ViewResolver 视图解析器-->
     <!--用于支持Servlet、JSP视图解析-->

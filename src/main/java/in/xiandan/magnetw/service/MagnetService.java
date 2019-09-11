@@ -11,11 +11,13 @@ import org.htmlcleaner.DomSerializer;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.TagNode;
 import org.jsoup.Connection;
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
@@ -162,7 +164,7 @@ public class MagnetService {
     }
 
     public String formatSiteUrl(MagnetRule rule, String keyword, String sort, int page) {
-        if (StringUtils.isEmpty(keyword)){
+        if (StringUtils.isEmpty(keyword)) {
             return rule.getUrl();
         }
         //用页码和关键字 拼接源站的url
@@ -255,6 +257,12 @@ public class MagnetService {
                 }
             }
             return infos;
+        } catch (HttpStatusException e) {
+            if (e.getStatusCode() == HttpStatus.NOT_FOUND.value() || e.getStatusCode() == HttpStatus.FORBIDDEN.value()) {
+                return new ArrayList<MagnetItem>();
+            } else {
+                throw new MagnetParserException(e);
+            }
         } catch (Exception e) {
             throw new MagnetParserException(e);
         }

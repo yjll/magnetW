@@ -16,7 +16,7 @@
         maxElementsInMemory="15000"
         eternal="false"
         overflowToDisk="false"
-        diskSpoolBufferSizeMB="500"
+        diskSpoolBufferSizeMB="50"
         diskPersistent="true"
         diskExpiryThreadIntervalSeconds="600"
         timeToIdleSeconds="86400"
@@ -28,7 +28,7 @@
         maxElementsInMemory="1000"
         eternal="true"
         overflowToDisk="true"
-        diskSpoolBufferSizeMB="500"
+        diskSpoolBufferSizeMB="50"
         diskPersistent="true"
         diskExpiryThreadIntervalSeconds="7200"/>
 </ehcache>

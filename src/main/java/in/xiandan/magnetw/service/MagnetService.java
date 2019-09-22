@@ -16,6 +16,7 @@ import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Async;
@@ -63,6 +64,10 @@ public class MagnetService {
 
     @Autowired
     private ApplicationConfig config;
+
+    @Autowired
+    @Lazy
+    private MagnetService magnetService;
 
     @CacheEvict(value = {"magnetList", "magnetDetail"}, allEntries = true)
     public void clearCache() {
@@ -153,7 +158,7 @@ public class MagnetService {
             log.append(headers.get(header));
             log.append("\n");
         }
-        logger.info(log.toString());
+//        logger.info(log.toString());
 
         Connection.Response response = connect.execute();
 
@@ -276,23 +281,25 @@ public class MagnetService {
     public void asyncPreloadNextPage(MagnetRule rule, MagnetPageOption current, String userAgent) {
         try {
             int page = current.getPage() + 1;
-            String cacheName = "magnetList";
-            if (CacheManager.getInstance().cacheExists(cacheName)) {
-                String key = String.format("%s-%s-%s-%d", rule.getUrl(), current.getKeyword(), current.getSort(), page);
-                Cache cache = CacheManager.getInstance().getCache(cacheName);
-                Element element = cache.get(key);
-                //如果没有缓存 就缓存下一页
-                if (element == null) {
-                    List<MagnetItem> items = this.parser(rule, current.getKeyword(), current.getSort(), page, userAgent);
-                    cache.put(new Element(key, items));
+            List<MagnetItem> itemList = magnetService.parser(rule, current.getKeyword(), current.getSort(), page, userAgent);
 
-                    logger.info(String.format("成功预加载 %s-%s-%d，缓存%d条数据", current.getSite(), current.getKeyword(), page, items.size()));
-                }
-            }
+            logger.info(String.format("成功预加载 %s-%s-%d，缓存%d条数据", rule.getName(), current.getKeyword(), page, itemList.size()));
         } catch (MagnetParserException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Async
+    public void asyncPreloadOtherPage(MagnetPageOption current, String userAgent) {
+        List<MagnetRule> sites = ruleService.getSites();
+        for (MagnetRule site : sites) {
+            try {
+                List<MagnetItem> itemList = magnetService.parser(site, current.getKeyword(), current.getSort(), current.getPage(), userAgent);
+                logger.info(String.format("成功预加载 %s-%s-%d，缓存%d条数据", site.getSite(), current.getKeyword(), current.getPage(), itemList.size()));
+            } catch (Exception e) {
+            }
         }
     }
 

@@ -124,6 +124,9 @@ public class MagnetApiController {
         if (config.preloadEnabled && dataCount > 0) {
             magnetService.asyncPreloadNextPage(rule, pageOption, userAgent);
         }
+        if (pageOption.getPage() == 1){
+            magnetService.asyncPreloadOtherPage(pageOption,userAgent);
+        }
         return BaseResponse.success(data, String.format("搜索到%d条结果%s", dataCount, supplement));
     }
 

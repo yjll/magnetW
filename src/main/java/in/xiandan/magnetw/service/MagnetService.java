@@ -127,7 +127,7 @@ public class MagnetService {
                 .timeout((int) config.sourceTimeout)
                 .header(HttpHeaders.HOST, host);
         //增加userAgent
-        if (StringUtils.isEmpty(userAgent)) {
+        if (!StringUtils.isEmpty(userAgent)) {
             connect.header(HttpHeaders.USER_AGENT, userAgent);
         }
 

@@ -73,7 +73,7 @@
         <h5>举报相关</h5>
         <div class="actions">
             <button type="button" class="btn btn-outline-dark"
-                    @click="requestAdminApi('api/report-list')">举报列表
+                    @click="requestAdminApi('admin/report-list')">举报列表
             </button>
             <button type="button" class="btn btn-outline-dark"
                     @click="requestAdminApi('admin/report-reload')">重载举报
@@ -84,6 +84,10 @@
             <input v-model="report.deleteValue" type="text" class="form-control"
                    placeholder="输入已记录的关键词或磁力链"/>
             <div class="input-group-append">
+                <button class="btn btn-outline-dark" type="button"
+                        @click="requestAddReport">
+                    添加记录
+                </button>
                 <button class="btn btn-outline-dark" type="button"
                         @click="requestDeleteReport">
                     删除记录
@@ -109,7 +113,7 @@
         },
         methods: {
             requestAdminApi(options, params = {}) {
-                if (!this.req.completed){
+                if (!this.req.completed) {
                     return
                 }
                 this.req.message = "正在请求...";
@@ -144,11 +148,19 @@
                 }
                 return (false);
             },
+            requestAddReport() {
+                if (this.report.deleteValue) {
+                    this.requestAdminApi({
+                        path: 'admin/report-add',
+                        method: 'POST'
+                    }, {value: this.report.deleteValue})
+                }
+            },
             requestDeleteReport() {
                 if (this.report.deleteValue) {
                     this.requestAdminApi({
                         path: 'admin/report-delete',
-                        method: 'delete'
+                        method: 'DELETE'
                     }, {value: this.report.deleteValue})
                 }
             }

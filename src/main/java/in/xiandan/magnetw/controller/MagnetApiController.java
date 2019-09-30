@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,14 +17,13 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import in.xiandan.magnetw.config.ApplicationConfig;
+import in.xiandan.magnetw.handler.RequestLoggerHandler;
 import in.xiandan.magnetw.response.BaseResponse;
 import in.xiandan.magnetw.response.MagnetItem;
 import in.xiandan.magnetw.response.MagnetItemDetail;
 import in.xiandan.magnetw.response.MagnetPageData;
 import in.xiandan.magnetw.response.MagnetPageOption;
 import in.xiandan.magnetw.response.MagnetRule;
-import in.xiandan.magnetw.response.ReportData;
-import in.xiandan.magnetw.response.ReportItem;
 import in.xiandan.magnetw.service.MagnetRuleService;
 import in.xiandan.magnetw.service.MagnetService;
 import in.xiandan.magnetw.service.PermissionService;
@@ -51,6 +51,7 @@ public class MagnetApiController {
     ReportService reportService;
 
     private Logger logger = Logger.getLogger(getClass());
+    private Logger feedback = Logger.getLogger("feedback");
 
 
     /**
@@ -170,15 +171,14 @@ public class MagnetApiController {
         }
     }
 
-    @RequestMapping(value = "report-list")
-    public BaseResponse<ReportData> reportList() throws Exception {
-        List<ReportItem> keywords = reportService.getKeywordList();
-        List<ReportItem> urls = reportService.getUrlList();
-        ReportData data = new ReportData();
-        data.setKeywords(keywords);
-        data.setUrls(urls);
-        int count = keywords.size() + urls.size();
-        return BaseResponse.success(data, String.format("共%d条记录", count));
+    @RequestMapping(value = "feedback", method = RequestMethod.POST)
+    public BaseResponse<String> feedback(HttpServletRequest request, @RequestBody String json) throws Exception {
+        StringBuffer sb=new StringBuffer();
+        sb.append(RequestLoggerHandler.buildRequestString(request));
+        sb.append("\n");
+        sb.append(json);
+        feedback.info(sb.toString());
+        return BaseResponse.success(null, "已记录本次结果");
     }
 
 

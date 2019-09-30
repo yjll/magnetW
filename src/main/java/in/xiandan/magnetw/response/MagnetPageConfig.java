@@ -11,6 +11,7 @@ public class MagnetPageConfig {
     private String versionLink;
     private boolean trackersEnabled;
     private boolean reportEnabled;
+    private boolean feedbackEnabled;
     private boolean resultToast;
 
     public MagnetPageConfig(ApplicationConfig config) {
@@ -19,6 +20,7 @@ public class MagnetPageConfig {
         this.versionLink = config.versionLink;
         this.trackersEnabled = config.trackersEnabled;
         this.reportEnabled = config.reportEnabled;
+        this.feedbackEnabled = config.feedbackEnabled;
         this.resultToast = config.resultToast;
     }
 
@@ -71,5 +73,13 @@ public class MagnetPageConfig {
 
     public void setResultToast(boolean resultToast) {
         this.resultToast = resultToast;
+    }
+
+    public boolean isFeedbackEnabled() {
+        return feedbackEnabled;
+    }
+
+    public void setFeedbackEnabled(boolean feedbackEnabled) {
+        this.feedbackEnabled = feedbackEnabled;
     }
 }

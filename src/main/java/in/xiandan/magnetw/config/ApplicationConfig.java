@@ -56,6 +56,9 @@ public class ApplicationConfig {
     @Value("${search.report.enabled}")
     public boolean reportEnabled;
 
+    @Value("${feedback.failure.enabled}")
+    public boolean feedbackEnabled;
+
     @Value("${preload.enabled}")
     public boolean preloadEnabled;
 

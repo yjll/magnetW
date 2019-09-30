@@ -56,7 +56,7 @@
   },
   {
     "site": "BT蚂蚁",
-    "proxy": false,
+    "proxy": true,
     "group": "//div[@id='wall']/div[@class='search-item']",
     "magnet": "./div[@class='item-title']/a/@href",
     "name": "./div[@class='item-title']/a",
@@ -149,7 +149,7 @@
   },
   {
     "site": "BTSOW",
-    "proxy": true,
+    "proxy": false,
     "group": "//div[@class='row']",
     "magnet": "./a/@href",
     "name": "./a/div[1]",

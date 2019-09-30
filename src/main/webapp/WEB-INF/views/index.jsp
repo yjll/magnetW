@@ -12,8 +12,7 @@
     <meta name="viewport"
           content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <meta name="description" content="磁力搜是一个聚合搜索磁力链接的引擎">
-    <meta name="robots" content="noarchive">
-    <meta name="robots" content="noindex,follow">
+    <meta name="robots" content="noindex,noarchive,follow">
 
     <link href="https://cdn.bootcss.com/element-ui/2.11.1/theme-chalk/index.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/amazeui/2.7.2/css/amazeui.min.css" rel="stylesheet">
@@ -84,6 +83,9 @@
                            :href="current.siteUrl" target="_blank">去源站</a>
                         <el-button size="mini" v-if="config.reportEnabled"
                                    @click="showReportDialog">自助举报
+                        </el-button>
+                        <el-button size="mini" v-if="config.feedbackEnabled" :loading="feedbackLoading"
+                                   @click="requestFeedback">反馈失效
                         </el-button>
                     </el-col>
                     <!--右边-->

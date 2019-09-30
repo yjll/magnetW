@@ -39,8 +39,8 @@ public class SpiderFilter extends OncePerRequestFilter {
             String userAgent = request.getHeader(HttpHeaders.USER_AGENT);
             String regex = "googlebot|mediapartners-google|adsbot-google|baiduspider|360spider|haosouspider|sosospider|sogou spider|sogou news spider|sogou web spider|sogou inst spider|sogou spider2|sogou blog|sogou orion spider|yodaobot|youdaobot|bingbot|slurp|teoma|ia_archiver|twiceler|msnbot|scrubby|robozilla|gigabot|yahoo-mmcrawler|yahoo-blogs|yahoo! slurp china|yahoo!-adcrawler|psbot|yisouspider|easouspider|jikespider|etaospider";
             if (Pattern.compile(regex, Pattern.CASE_INSENSITIVE).matcher(userAgent).find()) {
-                logger.info(String.format("搜索引擎被拒绝--->%s\n%s", requestURL, userAgent));
-                response.setStatus(HttpStatus.FORBIDDEN.value());
+                logger.info(String.format("爬虫引擎被拒绝--->%s\n%s", requestURL, userAgent));
+                response.setStatus(HttpStatus.NOT_FOUND.value());
                 return;
             }
         }

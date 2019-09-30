@@ -12,7 +12,7 @@
     <meta name="viewport"
           content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description" content="磁力搜是一个聚合搜索磁力链接的引擎">
-    <meta name="robots" content="noindex,noarchive,follow">
+    <meta name="robots" content="noindex,noarchive,nofollow">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.0/lib/index.css">
     <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>

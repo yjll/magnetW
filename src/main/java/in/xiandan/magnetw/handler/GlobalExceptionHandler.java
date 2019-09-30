@@ -34,8 +34,10 @@ public class GlobalExceptionHandler {
         }
         if (e instanceof HttpStatusException) {
             return BaseResponse.error(String.format("%s,%d", e.getMessage(), ((HttpStatusException) e).getStatusCode()));
-        } else if (e instanceof SocketTimeoutException || e instanceof UnknownHostException || e instanceof ConnectException) {
+        } else if (e instanceof SocketTimeoutException || e instanceof UnknownHostException) {
             return BaseResponse.error("请求源站超时");
+        } else if (e instanceof ConnectException) {
+            return BaseResponse.error("访问源站失败");
         } else if (e instanceof MissingServletRequestParameterException) {
             return BaseResponse.error("缺少参数");
         }

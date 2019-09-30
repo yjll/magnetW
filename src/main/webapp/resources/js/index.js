@@ -281,6 +281,7 @@ new Vue({
         requestFeedback() {
             this.feedbackLoading = true;
             let body = JSON.stringify({
+                message: this.message,
                 config: this.config,
                 list: this.list,
                 trackersString: this.trackersString,

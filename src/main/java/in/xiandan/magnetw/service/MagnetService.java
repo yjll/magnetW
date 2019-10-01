@@ -376,7 +376,7 @@ public class MagnetService {
                 e.printStackTrace();
                 newMagnet = url;
             }
-            return String.format("magnet:?xt=urn:btih:%s", newMagnet);
+            return String.format("magnet:?xt=urn:btih:%s", newMagnet).toLowerCase();
         }
     }
 

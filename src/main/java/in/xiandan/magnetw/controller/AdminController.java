@@ -186,6 +186,7 @@ public class AdminController {
             data.setUrls(urls);
             int count = keywords.size() + urls.size();
             response.setMessage(String.format("共%d条记录", count));
+            response.setData(data);
         }
         return response;
     }

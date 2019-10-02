@@ -129,7 +129,7 @@ public class MagnetService {
                 .header(HttpHeaders.HOST, host)
                 .header(HttpHeaders.ACCEPT_LANGUAGE, "zh-CN,zh;q=0.9,zh-TW;q=0.8,en;q=0.7,und;q=0.6,ja;q=0.5,la;q=0.4");
         //增加userAgent
-        String userAgentHeader = StringUtils.isEmpty(userAgent) ? "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36" : userAgent;
+        String userAgentHeader = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36";
         connect.header(HttpHeaders.USER_AGENT, userAgentHeader);
 
         //代理设置

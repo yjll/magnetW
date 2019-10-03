@@ -1,9 +1,8 @@
 package in.xiandan.magnetw.service;
 
 
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Element;
+import com.google.common.collect.Iterables;
+import in.xiandan.magnetw.config.CacheConfig;
 
 import org.apache.log4j.Logger;
 import org.htmlcleaner.CleanerProperties;
@@ -179,7 +178,7 @@ public class MagnetService {
         return String.format("%s%s", rule.getUrl(), sortPath);
     }
 
-    @Cacheable(value = "magnetList", key = "T(String).format('%s-%s-%s-%d',#rule.url,#keyword,#sort,#page)")
+    @Cacheable(value = CacheConfig.MAGNET_LIST_KEY, key = "T(String).format('%s-%s-%s-%d',#rule.url,#keyword,#sort,#page)")
     public List<MagnetItem> parser(MagnetRule rule, String keyword, String sort, int page, String userAgent) throws Exception {
         if (StringUtils.isEmpty(keyword)) {
             throw new EmptyListException();
@@ -265,6 +264,9 @@ public class MagnetService {
             if (infos.isEmpty()) {
                 throw new EmptyListException();
             }
+
+            logger.info(String.format("成功预加载 %s|%s-%s|第%d页，缓存%d条数据", rule.getSite(), keyword, sort, page, infos.size()));
+
             return infos;
         } catch (EmptyListException e) {
             //防止空数据被缓存
@@ -286,11 +288,9 @@ public class MagnetService {
     public void asyncPreloadNextPage(MagnetRule rule, MagnetPageOption current, String userAgent) {
         try {
             int page = current.getPage() + 1;
-            List<MagnetItem> itemList = magnetService.parser(rule, current.getKeyword(), current.getSort(), page, userAgent);
+            magnetService.parser(rule, current.getKeyword(), current.getSort(), page, userAgent);
 
-            logger.info(String.format("成功预加载 %s-%s-%d，缓存%d条数据", rule.getName(), current.getKeyword(), page, itemList.size()));
         } catch (Exception e) {
-            logger.error("异步缓存下一页失败", e);
         }
     }
 
@@ -299,10 +299,32 @@ public class MagnetService {
         List<MagnetRule> sites = ruleService.getSites();
         for (MagnetRule site : sites) {
             try {
-                List<MagnetItem> itemList = magnetService.parser(site, current.getKeyword(), current.getSort(), current.getPage(), userAgent);
-                logger.info(String.format("成功预加载 %s-%s-%d，缓存%d条数据", site.getSite(), current.getKeyword(), current.getPage(), itemList.size()));
+                List<MagnetPageSiteSort> supportedSorts = ruleService.getSupportedSorts(site.getPaths());
+                MagnetPageSiteSort magnetPageSiteSort = Iterables.getFirst(supportedSorts, new MagnetPageSiteSort(MagnetPageSiteSort.SORT_OPTION_DEFAULT));
+                magnetService.asyncCachePage(site, current.getKeyword(), magnetPageSiteSort.getSort(), current.getPage(), userAgent);
             } catch (Exception e) {
             }
+        }
+    }
+
+    @Async
+    public void asyncCachePage(MagnetRule rule, String keyword, String sort, int page, String userAgent) throws Exception {
+        magnetService.parser(rule, keyword, sort, page, userAgent);
+    }
+
+    @Async
+    public void asyncCacheDetail(List<MagnetItem> detailUrlList, MagnetRule rule, String userAgent){
+        for (MagnetItem detailUrl : detailUrlList) {
+            magnetService.asyncCacheDetail(detailUrl.getDetailUrl(),rule,userAgent);
+        }
+    }
+
+    @Async
+    public void asyncCacheDetail(String detailUrl, MagnetRule rule, String userAgent){
+        try {
+            magnetService.parserDetail(detailUrl,rule,userAgent);
+        } catch (Exception e) {
+
         }
     }
 
@@ -316,7 +338,7 @@ public class MagnetService {
      * @return
      * @throws MagnetParserException
      */
-    @Cacheable(value = "magnetDetail", key = "#detailUrl")
+    @Cacheable(value = CacheConfig.MAGNET_DETAIL_KEY, key = "#detailUrl")
     public MagnetItemDetail parserDetail(String detailUrl, MagnetRule rule, String userAgent) throws MagnetParserException {
         try {
             MagnetRuleDetail detail = rule.getDetail();

@@ -89,8 +89,15 @@ public class MagnetApiController {
 
         String userAgent = request.getHeader(HttpHeaders.USER_AGENT);
 
+        keyword = keyword.trim();
         //默认参数
         MagnetPageOption pageOption = magnetService.transformCurrentOption(source, keyword, sort, page);
+
+        // 异步缓存其他页面
+        if (pageOption.getPage() == 1){
+            magnetService.asyncPreloadOtherPage(pageOption,userAgent);
+        }
+
         MagnetRule rule = ruleService.getRuleBySite(pageOption.getSite());
 
         List<MagnetItem> infos = new ArrayList<MagnetItem>();
@@ -125,9 +132,11 @@ public class MagnetApiController {
         if (config.preloadEnabled && dataCount > 0) {
             magnetService.asyncPreloadNextPage(rule, pageOption, userAgent);
         }
-        if (pageOption.getPage() == 1){
-            magnetService.asyncPreloadOtherPage(pageOption,userAgent);
-        }
+
+        magnetService.asyncCacheDetail(infos,rule,userAgent);
+
+
+
         return BaseResponse.success(data, String.format("搜索到%d条结果%s", dataCount, supplement));
     }
 

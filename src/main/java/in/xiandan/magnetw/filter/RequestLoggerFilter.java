@@ -21,7 +21,7 @@ public class RequestLoggerFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         if (!request.getRequestURI().endsWith("feedback")) {
-            logger.info(RequestLoggerHandler.buildRequestString(request));
+//            logger.info(RequestLoggerHandler.buildRequestString(request));
         }
 
         chain.doFilter(request, response);

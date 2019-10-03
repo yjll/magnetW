@@ -33,15 +33,4 @@ http://www.springframework.org/schema/cache http://www.springframework.org/schem
         <property name="suffix" value=".jsp" />
     </bean>
 
-    <!--缓存-->
-    <cache:annotation-driven cache-manager="cacheManager" />
-    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
-        <property name="cacheManager" ref="ehcache"></property>
-    </bean>
-
-    <bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
-        p:shared="true">
-        <property name="configLocation" value="classpath:ehcache.xml"></property>
-    </bean>
-
 </beans>

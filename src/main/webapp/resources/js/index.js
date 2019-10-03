@@ -25,6 +25,8 @@ new Vue({
             value: null,
             name: null
         },
+        //反馈
+        feedbackLoading: false,
         //设置
         setting: {
             memoryChoice: false,
@@ -273,6 +275,36 @@ new Vue({
                 });
             }
         },
+        /**
+         * 提交反馈
+         */
+        requestFeedback() {
+            this.feedbackLoading = true;
+            let body = JSON.stringify({
+                message: this.message,
+                config: this.config,
+                list: this.list,
+                trackersString: this.trackersString,
+                current: this.current,
+                sortBy: this.sortBy,
+                rule: this.rule,
+                multipleSelection: this.multipleSelection,
+                setting: this.setting
+            });
+            this.$http.post("api/feedback", body, {emulateJSON: true})
+                .then(function (response) {
+                    //请求成功
+                    this.feedbackLoading = false;
+                    if (response.body.success) {
+                        this.onToastMessage(response.body.message, "success");
+                    } else {
+                        this.onToastMessage(response.body.message, "error");
+                    }
+                }).catch(function (error) {
+                this.feedbackLoading = false;
+                this.onToastMessage("提交失败", "error")
+            });
+        },
         onChangeMemoryChoice(checked) {
             if (!checked) {
                 this.setting.source = null;
@@ -318,4 +350,5 @@ new Vue({
         }
 
     }
-});
+})
+;

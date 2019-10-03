@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -20,6 +21,8 @@ import in.xiandan.magnetw.config.ApplicationConfig;
 import in.xiandan.magnetw.handler.PermissionHandler;
 import in.xiandan.magnetw.response.BaseResponse;
 import in.xiandan.magnetw.response.MagnetPageConfig;
+import in.xiandan.magnetw.response.ReportData;
+import in.xiandan.magnetw.response.ReportItem;
 import in.xiandan.magnetw.service.MagnetRuleService;
 import in.xiandan.magnetw.service.MagnetService;
 import in.xiandan.magnetw.service.PermissionService;
@@ -143,6 +146,47 @@ public class AdminController {
         BaseResponse response = permissionService.runAsPermission(password, "删除成功", null);
         if (response.isSuccess()) {
             reportService.deleteReport(value);
+        }
+        return response;
+    }
+
+    /**
+     * 添加举报记录
+     *
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping(value = "report-add", method = RequestMethod.POST)
+    public BaseResponse reportAdd(@RequestParam(value = "p") String password, @RequestParam final String value) throws Exception {
+        BaseResponse response = permissionService.runAsPermission(password, "添加成功", null);
+        if (response.isSuccess()) {
+            reportService.put(null, value);
+        }
+        return response;
+    }
+
+
+    /**
+     * 获取举报列表
+     *
+     * @param password
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping(value = "report-list", method = RequestMethod.GET)
+    public BaseResponse reportList(@RequestParam(value = "p") String password) throws Exception {
+        BaseResponse response = permissionService.runAsPermission(password, null, null);
+        if (response.isSuccess()) {
+            List<ReportItem> keywords = reportService.getKeywordList();
+            List<ReportItem> urls = reportService.getUrlList();
+            ReportData data = new ReportData();
+            data.setKeywords(keywords);
+            data.setUrls(urls);
+            int count = keywords.size() + urls.size();
+            response.setMessage(String.format("共%d条记录", count));
+            response.setData(data);
         }
         return response;
     }

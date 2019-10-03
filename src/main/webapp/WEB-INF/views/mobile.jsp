@@ -12,8 +12,7 @@
     <meta name="viewport"
           content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description" content="磁力搜是一个聚合搜索磁力链接的引擎">
-    <meta name="robots" content="noarchive">
-    <meta name="robots" content="noindex,follow">
+    <meta name="robots" content="noindex,noarchive,nofollow">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.0/lib/index.css">
     <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
@@ -63,7 +62,8 @@
     <van-row class="option-row">
         <!--左边-->
         <van-col span="12" class="option-left">
-            <a v-if="config.reportEnabled" @click="showReportDialog">自助举报</a>
+            <a v-if="config.reportEnabled" @click="showReportDialog" class="option-left-link">自助举报</a>
+            <a v-if="config.feedbackEnabled" @click="requestFeedback">反馈失效</a>
         </van-col>
         <!--右边-->
         <van-col span="12" class="option-right">

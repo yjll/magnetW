@@ -56,7 +56,7 @@
   },
   {
     "site": "BT蚂蚁",
-    "proxy": false,
+    "proxy": true,
     "group": "//div[@id='wall']/div[@class='search-item']",
     "magnet": "./div[@class='item-title']/a/@href",
     "name": "./div[@class='item-title']/a",
@@ -71,25 +71,6 @@
     },
     "detail": {
       "files": "//*[@id=\"wall\"]/ol/li"
-    }
-  },
-  {
-    "site": "BT4G",
-    "proxy": true,
-    "group": "//div[@class='search-item detail-width']",
-    "magnet": "./div[1]/h3/a/@href",
-    "name": "./div[1]/h3/a",
-    "size": "./div[3]/span[4]/b",
-    "date": "./div[3]/span[2]/b",
-    "hot": "./div[3]/span[5]/b",
-    "url": "https://cn.bt4g.com",
-    "paths": {
-      "time": "/search/%s/%d",
-      "size": "/search/%s/bysize/%d",
-      "hot": "/search/%s/byrequests/%d"
-    },
-    "detail": {
-      "files": "//*[@id=\"wall\"]/div[6]/div[2]/ol/li"
     }
   },
   {
@@ -164,25 +145,6 @@
     }
   },
   {
-    "site": "Torrentz2",
-    "proxy": false,
-    "group": "//div[@class=\"results\"]/dl",
-    "magnet": "./dt/a/@href",
-    "name": "./dt/a",
-    "size": "./dd/span[3]",
-    "date": "./dd/span[2]",
-    "hot": "./dd/span[5]",
-    "url": "https://www.torrentz2.eu",
-    "paths": {
-      "preset": "/search?f=%s&p=%d",
-      "time": "/searchA?f=%s&p=%d",
-      "size": "/searchS?f=%s&p=%d"
-    },
-    "detail": {
-      "files": "//div[@class=\"files\"]/ul/li"
-    }
-  },
-  {
     "site": "idope",
     "proxy": true,
     "group": "//div[@class=\"resultdiv\"]",
@@ -201,17 +163,64 @@
   },
   {
     "site": "SkrBT",
-    "proxy": false,
-    "group": "//li[@class='search-ret-item']",
-    "magnet": "./h2/a/@href",
-    "name": "./h2/a",
-    "size": "./div/span[1]",
-    "date": "./div/span[3]",
-    "hot": "./div/span[4]",
+    "proxy": true,
+    "group": "//ul[@class='list-unstyled']",
+    "magnet": "./li[2]/a/@href",
+    "name": "./li[1]/a",
+    "size": "./li[2]/span[1]",
+    "date": "./li[2]/span[3]",
+    "hot": "./li[2]/span[4]",
     "url": "https://www.skrbt.world",
     "paths": {
-      "time": "/search?keyword=%s&s=relevance&p=%d",
+      "preset": "/search?keyword=%s&s=relevance&p=%d",
+      "time": "/search?keyword=%s&s=date&p=%d",
       "size": "/search?keyword=%s&s=length&p=%d"
+    }
+  },
+  {
+    "site": "BT4G",
+    "proxy": true,
+    "group": "/html/body/main/div/div[3]/div/div",
+    "magnet": "./h5/a/@href",
+    "name": "./h5/a",
+    "size": "./span[4]/b",
+    "date": "./span[2]/b",
+    "url": "https://cn.bt4g.com",
+    "paths": {
+      "time": "/search/%s/%d",
+      "size": "/search/%s/bysize/%d",
+      "hot": "/search/%s/byrequests/%d"
+    },
+    "detail": {
+      "files": "//*[@id=\"wall\"]/div[6]/div[2]/ol/li"
+    }
+  },
+  {
+    "site": "MAG磁力站",
+    "proxy": false,
+    "group": "//ul[@class='link-list']",
+    "magnet": "./li/@data-magnet",
+    "name": "./li/span[1]",
+    "size": "./li/span[2]/span[1]",
+    "date": "./li/span[2]/span[2]",
+    "url": "http://oabt005.com",
+    "paths": {
+      "preset": "/index/index/k/%s/p/%d"
+    }
+  },
+  {
+    "site": "KickassTorrents",
+    "group": "//tr[@class='odd']",
+    "magnet": "./td[1]/div[2]/div/a/@href",
+    "name": "./td[1]/div[2]/div/a",
+    "size": "./td[2]",
+    "date": "./td[4]",
+    "url": "https://kickasstorrents.to",
+    "paths": {
+      "preset": "/usearch/%s/%d"
+    },
+    "detail": {
+      "files": "//div[@class=\"dd filelist\"]"
     }
   },
   {
@@ -226,37 +235,6 @@
     "paths": {
       "time": "/search?keyword=%s&s=relevance&p=%d",
       "size": "/search?keyword=%s&s=length&p=%d"
-    }
-  },
-  {
-    "site": "卧槽搜搜",
-    "group": "//td[@class='x-item']",
-    "magnet": "./h3/a/@href",
-    "name": "./h3/a",
-    "size": "./span[4]/b",
-    "date": "./span[2]/b",
-    "hot": "./span[3]/b",
-    "url": "http://www.wcs777.com",
-    "paths": {
-      "time": "/s/%s-first-asc-%d",
-      "size": "/s/%s-size-desc-%d",
-      "hot": "/s/%s-hot-desc-%d"
-    },
-    "detail": {
-      "files": "//div[@class=\"dd filelist\"]"
-    }
-  },
-  {
-    "site": "MAG磁力站",
-    "proxy": false,
-    "group": "//ul[@class='link-list']",
-    "magnet": "./li/@data-magnet",
-    "name": "./li/span[1]",
-    "size": "./li/span[2]/span[1]",
-    "date": "./li/span[2]/span[2]",
-    "url": "http://oabt005.com",
-    "paths": {
-      "preset": "/index/index/k/%s/p/%d"
     }
   }
 ]
